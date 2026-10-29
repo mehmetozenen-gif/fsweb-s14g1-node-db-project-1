@@ -1,17 +1,57 @@
--- Veritabanı Sorguları
 
--- Posta kodu 1010 olan tüm müşterileri bulun
+-- 1. Posta kodu 1010 olan müşteriler
+SELECT *
+FROM Customers
+WHERE PostalCode = '1010';
 
--- id'si 11 olan tedarikçinin telefon numarasını bulun
+-- 2. ID'si 11 olan tedarikçinin telefon numarası
+SELECT Phone
+FROM Suppliers
+WHERE SupplierID = 11;
 
--- Verilen ilk 10 siparişi, sipariş tarihine göre azalan şekilde listeleyin
+-- 3. Tarihe göre en yeni 10 sipariş
+SELECT *
+FROM Orders
+ORDER BY OrderDate DESC
+LIMIT 10;
 
--- Londra, Madrid veya Brezilya'da yaşayan tüm müşterileri bulun
+-- 4. London, Madrid veya Brazil müşterileri
+SELECT *
+FROM Customers
+WHERE City IN ('London', 'Madrid')
+   OR Country = 'Brazil';
 
--- "The Shire" için bir müşteri kaydı ekleyin, ilgili kişi adı "Bilbo Baggins", adres - "Bag End" içinde "1 Hobbit-Hole", posta kodu "111" ve ülke "Middle Earth"
+-- 5. Bilbo Baggins isimli müşteriyi ekle
+INSERT INTO Customers (
+  CustomerName,
+  ContactName,
+  Address,
+  City,
+  PostalCode,
+  Country
+)
+VALUES (
+  'The Shire',
+  'Bilbo Baggins',
+  '1 Hobbit-Hole',
+  'Bag End',
+  '111',
+  'Orta Dünya'
+);
 
--- Posta kodu "11122" olarak değişecek şekilde Bilbo Baggins kaydını güncelleyin
+-- 6. Bilbo Baggins posta kodunu güncelle
+UPDATE Customers
+SET PostalCode = '11122'
+WHERE CustomerName = 'The Shire'
+  AND ContactName = 'Bilbo Baggins';
 
--- (Zorlayıcı Görev) Müşteriler tablosunda kaç farklı şehrin saklandığını keşfetmek için bir sorgu bulun. Tekrarlar çift sayılmamalıdır
+-- ZORLAYICI GÖREV 1:
+-- Tekrarsız şehir sayısı
+SELECT COUNT(DISTINCT City) AS city_count
+FROM Customers;
 
--- (Zorlayıcı Görev) 20 karakterden uzun adları olan tüm tedarikçileri bulun. Adın uzunluğunu almak için "length(SupplierName)" kullanabilirsiniz.
+-- ZORLAYICI GÖREV 2:
+-- Adı 20 karakterden uzun olan tedarikçiler
+SELECT *
+FROM Suppliers
+WHERE LENGTH(SupplierName) > 20;
